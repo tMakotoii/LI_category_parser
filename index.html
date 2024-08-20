@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href="/style.css">
+</head>
+<body>
+    <h1>Парсер ключей из статы Live Internet для мониторинга трендов</h1>
+    <select id="category-select">
+        <option value="auto">Авто</option>
+        <option value="banks">Банки</option>
+        <option value="security">Безопастность</option>
+        <option value="realty">Бухгалтерия</option>
+        <option value="banks">Недвижимость</option>
+        <option value="media">Новости</option>
+        <option value="education">Обучение</option>
+        <option value="industry">Предприятия</option>
+        <option value="tourism">Путешествия</option>
+        <option value="job">Работа</option>
+        <option value="advertising">Реклама</option>
+        <option value="software">Софт</option>
+        <option value="info">Справки</option>
+        <option value="finance">Финансы</option>
+    </select>
+    <select id="preiod-select">
+        <option value="today">Сегодня</option>
+        <option value="yesterday">Вчера</option>
+        <option value="week">Неделя</option>
+        <option value="month">Месяц</option>
+    </select>
+
+    <button onclick="main()">Отправить</button>
+
+    <div class="res-of-work">
+        <div id="resultBlock"></div>
+        <!-- <div class="stop-words-list">
+            <h2>Стоп-слова</h2>
+            <textarea></textarea>
+        </div> -->
+        <div id="stopWordsContainer">
+            <label for="stopWords">Введите стоп-слова:</label>
+            <textarea id="stopWords" rows="4"></textarea>
+            <button onclick="applyStopWords()">Применить</button>
+        </div>
+    </div>
+
+    <script src="try.js"></script>
+</body>
+</html>
