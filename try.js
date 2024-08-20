@@ -116,7 +116,7 @@ function pageTableParse(rawDocument) {
         data.push(rowData);
     });
     
-    const filteredData = data.filter(rowData => !(rowData.keyQuery === 'total' || rowData.keyQuery === 'amount of selected'));
+    let filteredData = data.filter(rowData => !(rowData.keyQuery === 'total' || rowData.keyQuery === 'amount of selected'));
 
     if (getPeriodValue() === '?period=month') {
         filteredData = data.filter(rowData => !(rowData.keyQuery === 'Others'));
