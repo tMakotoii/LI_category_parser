@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel='stylesheet' href="/style.css">
+    <link rel='stylesheet' href="style.css">
 </head>
 <body>
     <h1>Парсер ключей из статы Live Internet для мониторинга трендов</h1>
@@ -39,13 +39,17 @@
             <h2>Стоп-слова</h2>
             <textarea></textarea>
         </div> -->
-        <div id="stopWordsContainer">
-            <label for="stopWords">Введите стоп-слова:</label>
-            <textarea id="stopWords"></textarea>
-            <button onclick="applyStopWords()">Применить</button>
+        <div class="stop-words">
+            <div id="stopWordsContainer">
+                <label for="stopWords">Введите стоп-слова:</label>
+                <textarea id="stopWords"></textarea>
+                <button onclick="applyStopWords()">Применить</button>
+            </div>
+            <div class="template stop-words-templates"></div>
         </div>
     </div>
 
     <script src="try.js"></script>
+    <script src="stop-words.js"></script>
 </body>
 </html>

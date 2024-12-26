@@ -6,7 +6,9 @@ function getCategoryPages(doc) {
     console.log('начинаем получать страницы');
     try {
         // Находим все ссылки, соответствующие критерию
-        const links = doc.querySelectorAll(`a[href*="queries.html${getPeriodValue()}&page="]`);
+        console.log('наша страница', doc)
+        const links = doc.querySelectorAll(`a[href*="queries.html?"][href*="page"]`);
+        console.log('наши страницы', links)
 
         // Извлекаем значения page из href и определяем максимальное значение
         let maxPage = 0;
@@ -66,19 +68,17 @@ async function mainRequest(urlCategory, pageCount) {
 
             // Ждем окончания задержки случайной/неслучайной длинны перед выполнением запроса
             // await delay(Math.floor(Math.random() * (3500 - 1000 + 1)) + 1000);
-            await delay(1500);
+            await delay(150);
 
             let encodedUrl = encodeURIComponent(`${urlCategory}&page=${i}`);
             let response = await fetch(`${proxyServer}${encodedUrl}`);
 
             console.log('ссылка в цикле', `${proxyServer}${urlCategory}&page=${i}`);
             console.log('ссылка целевая', `${urlCategory}&page=${i}`);
-
-            // Проверяем статус ответа
+            
             if (!response.ok) {
                 console.error(`HTTP error! status: ${response.status}. Retrying...`);
-                // Здесь вы можете повторить запрос или выбрать другое действие
-                continue; // Переходим к следующей итерации цикла
+                continue;
             }
 
             const htmlString = await response.text();
@@ -88,6 +88,8 @@ async function mainRequest(urlCategory, pageCount) {
             const pony = parser.parseFromString(contents, 'text/html');
 
             let res = pageTableParse(pony);
+
+            if (res.length == 0) break;
 
             fullyData.push(...res);
             console.log('длинна фулиДаты', fullyData.length);
@@ -113,6 +115,7 @@ function pageTableParse(rawDocument) {
         rowData.keyQuery = row.children[1].textContent.trim();
         rowData.frequency = row.children[2].textContent.trim();
 
+        if (rowData.frequency == 1) return;
         data.push(rowData);
     });
     
@@ -201,29 +204,6 @@ function displayObjects(resultData) {
 }
 
 
-function applyStopWords() {
-    const stopWordsTextarea = document.getElementById('stopWords');
-    const stopWordsInput = stopWordsTextarea.value;
-    const stopWordsList = stopWordsInput.split(/\s+/).filter(Boolean);
-
-    const resultBlock = document.getElementById('resultBlock');
-
-    // Фильтруем resultData, исключая фразы, содержащие стоп-слова
-    const filteredResultData = resultData.filter(item => {
-        return !stopWordsList.some(stopWord => {
-            // Строим регулярное выражение для каждого стоп-слова, ищем любую часть стоп-слова в keyQuery
-            const regex = new RegExp(`(${stopWord})`, 'gi'); // 'g' для глобального поиска, 'i' для нечувствительности к регистру
-            return regex.test(item.keyQuery);
-        });
-    });
-
-    // Отображаем отфильтрованные данные
-    displayObjects(filteredResultData);
-}
-
-
-
-
 async function main() {
     const categorySelect = document.getElementById('category-select').value;
     const periodSelect = getPeriodValue();
@@ -249,21 +229,4 @@ async function main() {
     console.log(keyQueries);
 
     displayObjects(resultData);
-
-    // // Получаем элемент div по его id
-    // const resultDiv = document.getElementById('resultBlock');
-
-    // // Проходимся по каждому внутреннему массиву
-    // resultData.forEach((itemArray) => {
-    // // Создаем новый элемент p или любой другой, который вам подходит
-    // const paragraph = document.createElement('p');
-    
-    // // Формируем строку из элементов внутреннего массива
-    // const itemString = itemArray.join(', ');
-    
-    // // Устанавливаем текст элемента p
-    // paragraph.textContent = itemString;
-    
-    // // Добавляем элемент p в div
-    // resultDiv.appendChild(paragraph);
 }
